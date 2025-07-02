@@ -26,6 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="LethalCompany.GameLibs.Steam" Version="56.0.1-ngd.0" Publicize="true" />
+      <PackageReference Include="LethalCompany.GameLibs.Steam" Version="70.0.0-ngd.0" Publicize="true" />
     </ItemGroup>
 </Project>
