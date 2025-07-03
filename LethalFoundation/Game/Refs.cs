@@ -57,9 +57,13 @@ namespace LethalFoundation
 
         public static bool IsChallengeFile => StartOfRound.isChallengeFile;
 
+        public static bool IsServer => NetworkManager.IsServer;
+
         ////////// General Content //////////
 
         public static int RandomMapSeed => StartOfRound.randomMapSeed;
+
+        public static float MapSizeMultiplier => RoundManager.mapSizeMultiplier;
 
         public static AllItemsList AllItemsList => StartOfRound?.allItemsList;
         public static List<Item> ItemsList { get => AllItemsList?.itemsList; set => AllItemsList.itemsList = value; }
@@ -70,6 +74,9 @@ namespace LethalFoundation
         public static Item[] BuyableItemsList { get => Terminal.buyableItemsList; set => Terminal.buyableItemsList = value; }
 
         public static SelectableLevel[] Levels { get => StartOfRound?.levels; set => StartOfRound.levels = value; }
+        public static SelectableLevel[] MoonsCatalogue { get => Terminal.moonsCatalogueList; set => Terminal.moonsCatalogueList = value; }
+
+
         public static IndoorMapType[] DungeonFlowTypes { get => RoundManager?.dungeonFlowTypes; set => RoundManager.dungeonFlowTypes = value; }
         public static AudioClip[] FirstTimeDungeonAudios { get => RoundManager?.firstTimeDungeonAudios; set => RoundManager.firstTimeDungeonAudios = value; }
 
@@ -79,6 +86,10 @@ namespace LethalFoundation
         public static int TimesFulfilledQuota => TimeOfDay.timesFulfilledQuota;
         
         public static LevelWeatherType CurrentWeather => CurrentLevel.currentWeather;
+
+        public static FootstepSurface[] FootstepSurfaces { get => StartOfRound?.footstepSurfaces; set => StartOfRound.footstepSurfaces = value; }
+
+        public static BuyableVehicle[] BuyableVehicles { get => Terminal?.buyableVehicles; set => Terminal.buyableVehicles = value; }
 
         ////////// Terminal //////////
 
