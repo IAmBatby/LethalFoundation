@@ -26,14 +26,17 @@ namespace LethalFoundation
 
         public static bool IsBuyableItem(this Item item) => Refs.BuyableItemsList.Contains(item);
 
-        public static void Add<T>(this T[] a, ref T[] array, T value)
+        public static NetworkString ToNetworked(this string input) => new NetworkString(input);
+
+        public static T[] Add<T>(this T[] array, T value)
         {
-            array = array.AddItem(value).ToArray();
+            return (array.AddItem(value).ToArray());
         }
 
-        public static T[] Add<T>(this T[] a, T value) => Utilities.Add(a,value);
-
-        public static NetworkString ToNetworked(this string input) => new NetworkString(input);
+        public static bool IsACompanyMoon(this SelectableLevel level)
+        {
+            return (level != null && level.planetHasTime && !level.spawnEnemiesAndScrap && level.dungeonFlowTypes.Length == 0);
+        }
 
     }
 }

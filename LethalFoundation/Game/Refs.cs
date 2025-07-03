@@ -17,34 +17,34 @@ namespace LethalFoundation
         ////////// Singletons //////////
 
         private static StartOfRound _startOfRound;
-        public static StartOfRound StartOfRound => Utilities.TrySeekObject(ref _startOfRound, StartOfRound.Instance);
+        public static StartOfRound StartOfRound => Utilities.TrySeekComponent(ref _startOfRound, StartOfRound.Instance);
 
         private static RoundManager _roundManager;
-        public static RoundManager RoundManager => Utilities.TrySeekObject(ref _roundManager, RoundManager.Instance);
+        public static RoundManager RoundManager => Utilities.TrySeekComponent(ref _roundManager, RoundManager.Instance);
 
         private static Terminal _terminal;
-        public static Terminal Terminal => Utilities.TrySeekObject(ref _terminal);
+        public static Terminal Terminal => Utilities.TrySeekComponent(ref _terminal);
 
         private static TimeOfDay _timeOfDay;
-        public static TimeOfDay TimeOfDay => Utilities.TrySeekObject(ref _timeOfDay, TimeOfDay.Instance);
+        public static TimeOfDay TimeOfDay => Utilities.TrySeekComponent(ref _timeOfDay, TimeOfDay.Instance);
 
         private static QuickMenuManager _quickMenuManager;
-        public static QuickMenuManager QuickMenuManager => Utilities.TrySeekObject(ref _quickMenuManager);
+        public static QuickMenuManager QuickMenuManager => Utilities.TrySeekComponent(ref _quickMenuManager);
 
         private static HUDManager _hudManager;
-        public static HUDManager HUDManager => Utilities.TrySeekObject<HUDManager>(ref _hudManager, HUDManager.Instance);
+        public static HUDManager HUDManager => Utilities.TrySeekComponent(ref _hudManager, HUDManager.Instance);
 
         private static NetworkManager _networkManager;
-        public static NetworkManager NetworkManager => Utilities.TrySeekObject(ref _networkManager, NetworkManager.Singleton);
+        public static NetworkManager NetworkManager => Utilities.TrySeekComponent(ref _networkManager, NetworkManager.Singleton);
 
         private static GameNetworkManager _gameNetworkManager;
-        public static GameNetworkManager GameNetworkManager => Utilities.TrySeekObject(ref _gameNetworkManager, GameNetworkManager.Instance);
+        public static GameNetworkManager GameNetworkManager => Utilities.TrySeekComponent(ref _gameNetworkManager, GameNetworkManager.Instance);
 
         private static NetworkPrefabsList _networkPrefabsList;
-        public static NetworkPrefabsList NetworkPrefabsList => Utilities.TrySeekResource(ref _networkPrefabsList);
+        public static NetworkPrefabsList NetworkPrefabsList => Utilities.TrySeekScriptableObject(ref _networkPrefabsList);
 
         private static NavMeshSurface _navMeshSurface;
-        public static NavMeshSurface NavMeshSurface => Utilities.TrySeekObject(ref _navMeshSurface);
+        public static NavMeshSurface NavMeshSurface => Utilities.TrySeekComponent(ref _navMeshSurface, Tags.OutsideLevelNavMesh);
 
         public static IReadOnlyList<NetworkPrefab> NetworkPrefabs => NetworkManager?.NetworkConfig?.Prefabs?.Prefabs;
 
@@ -54,10 +54,25 @@ namespace LethalFoundation
 
         public static PlayerControllerB LocalPlayer => GameNetworkManager?.localPlayerController;
         public static PlayerControllerB[] AllPlayers => StartOfRound?.allPlayerScripts;
+        public static bool AllPlayersDead => StartOfRound.allPlayersDead;
+        public static int LivingPlayers => StartOfRound.livingPlayers;
 
         public static bool IsChallengeFile => StartOfRound.isChallengeFile;
 
         public static bool IsServer => NetworkManager.IsServer;
+
+        private static Canvas _uiCanvas;
+        public static Canvas UICanvas
+        {
+            get
+            {
+                if (_uiCanvas == null)
+                    _uiCanvas = HUDManager?.UICamera?.GetComponentInChildren<Canvas>();
+                return (_uiCanvas);
+            }
+        }
+        public static Canvas TerminalCanvas => Terminal.terminalUIScreen;
+        public static Canvas RadarCanvas => StartOfRound.radarCanvas;
 
         ////////// General Content //////////
 
@@ -104,13 +119,13 @@ namespace LethalFoundation
         ////////// Ship //////////
 
         private static StartMatchLever _startMatchLever;
-        public static StartMatchLever StartMatchLever => Utilities.TrySeekObject(ref _startMatchLever);
+        public static StartMatchLever StartMatchLever => Utilities.TrySeekComponent(ref _startMatchLever);
 
         private static ShipLights _shipLights;
-        public static ShipLights ShipLights => Utilities.TrySeekObject(ref _shipLights);
+        public static ShipLights ShipLights => Utilities.TrySeekComponent(ref _shipLights);
 
         private static HangarShipDoor _hangarShipDoor;
-        public static HangarShipDoor HangerShipDoor => Utilities.TrySeekObject(ref _hangarShipDoor);
+        public static HangarShipDoor HangerShipDoor => Utilities.TrySeekComponent(ref _hangarShipDoor);
 
         public static ManualCameraRenderer MapScreen => StartOfRound.mapScreen;
 
@@ -161,15 +176,12 @@ namespace LethalFoundation
         public static List<EnemyAI> SpawnedEnemies => RoundManager?.SpawnedEnemies;
 
         private static GameObject _itemShipLandingNode;
-        public static GameObject ItemShipLandingNode
-        {
-            get
-            {
-                if (_itemShipLandingNode == null)
-                    _itemShipLandingNode = GameObject.FindGameObjectWithTag("ItemShipLandingNode");
-                return _itemShipLandingNode;
-            }
-        }
+        public static GameObject ItemShipLandingNode => Utilities.TrySeekGameObject(ref _itemShipLandingNode, Tags.ItemShipLandingNode);
+
+        private static DepositItemsDesk _depositItemsDesk;
+        public static DepositItemsDesk DepositItemsDesk => Utilities.TrySeekComponent(ref _depositItemsDesk);
+
+        public static bool IsOnCompanyMoon => CurrentLevel.IsACompanyMoon();
 
         //All have Colliders & Room
         public static int Layer_Primary => StartOfRound.collidersAndRoomMask;
